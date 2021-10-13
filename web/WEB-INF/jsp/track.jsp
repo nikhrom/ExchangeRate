@@ -12,6 +12,8 @@
     <title>Отслеживание валюты</title>
 </head>
 <body>
-    <img src="${requestScope.gifUrl}" alt="sss" height="360" width="480">
+
+    <img src="${requestScope.gifUrl}" alt="gif" height="360" width="480">
+
 </body>
 </html>

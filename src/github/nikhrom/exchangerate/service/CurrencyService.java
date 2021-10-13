@@ -25,7 +25,6 @@ public class CurrencyService {
     static final String RATES_URL_HISTORICAL_KEY = "rates.url.historical";
 
 
-
     public static CurrencyService getInstance(){
         return INSTANCE;
     }

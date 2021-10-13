@@ -3,7 +3,7 @@ package github.nikhrom.exchangerate.servlet;
 import github.nikhrom.exchangerate.dto.Currency;
 import github.nikhrom.exchangerate.service.CurrencyService;
 import github.nikhrom.exchangerate.service.GifService;
-import github.nikhrom.exchangerate.util.JspHelper;
+import github.nikhrom.exchangerate.util.PathHelper;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,12 +21,22 @@ public class CurrencyTracker extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String gifUrl = CURRENCY_SERVICE.rateIsHigherThanYesterday(Currency.valueOf(req.getParameter("currency")))?
-                GIF_SERVICE.getGifUrlByRateHigherTag():
-                GIF_SERVICE.getGifUrlByRateLowerTag();
 
-        req.setAttribute("gifUrl", gifUrl);
-        req.getRequestDispatcher(JspHelper.getPath("track"))
-            .forward(req, resp);
+        try {
+            String currency = req.getParameter("currency");
+            String gifUrl = CURRENCY_SERVICE.rateIsHigherThanYesterday(Currency.valueOf(currency)) ?
+                    GIF_SERVICE.getGifUrlByRateHigherTag() :
+                    GIF_SERVICE.getGifUrlByRateLowerTag();
+
+            req.setAttribute("gifUrl", gifUrl);
+            req.getRequestDispatcher(PathHelper.getJspPath("track"))
+                    .forward(req, resp);
+        }catch (Exception ex){
+            ex.printStackTrace();
+
+            req.setAttribute("gifUrl", PathHelper.getGifPath("no_work"));
+            req.getRequestDispatcher(PathHelper.getJspPath("track"))
+                    .forward(req, resp);
+        }
     }
 }
